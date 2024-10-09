@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -70,7 +71,10 @@ public class PlayerController : MonoBehaviour
         if(collision.gameObject.CompareTag("Ground")){
             Debug.Log("grounded");
             isGrounded = true;
-            
+            if(transform.position.y < 0){
+                Debug.Log("GameOver!!");
+                SceneManager.LoadScene(0);
+            }
         }
     }
     private void OnCollisionExit2D(Collision2D collision)
@@ -78,6 +82,7 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             isGrounded = false;
+            
         }
     }
     void crouch(bool isCrouching)
