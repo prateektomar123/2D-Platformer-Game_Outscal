@@ -12,6 +12,8 @@ public class PlayerController : MonoBehaviour
     public float jumpForce;
     private Vector2 boxColInitSize;
     private Vector2 boxColInitOffset;
+
+    public ScoreController scoreController;
     public bool isGrounded;
     // Start is called before the first frame update
     private void Awake() {
@@ -75,6 +77,12 @@ public class PlayerController : MonoBehaviour
                 Debug.Log("GameOver!!");
                 SceneManager.LoadScene(0);
             }
+        }
+        else if (collision.gameObject.CompareTag("key"))
+        {
+            scoreController.incScore();
+            collision.gameObject.GetComponent<Animator>().SetBool("destroyed",true);
+            Destroy(collision.gameObject,2.5f);
         }
     }
     private void OnCollisionExit2D(Collision2D collision)
