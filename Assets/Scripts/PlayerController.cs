@@ -81,7 +81,8 @@ public class PlayerController : MonoBehaviour
         else if (collision.gameObject.CompareTag("key"))
         {
             scoreController.incScore();
-            Destroy(collision.gameObject);
+            collision.gameObject.GetComponent<Animator>().SetBool("destroyed",true);
+            Destroy(collision.gameObject,2.5f);
         }
     }
     private void OnCollisionExit2D(Collision2D collision)
