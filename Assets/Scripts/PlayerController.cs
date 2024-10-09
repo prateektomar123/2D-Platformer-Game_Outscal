@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour
     public float jumpForce;
     private Vector2 boxColInitSize;
     private Vector2 boxColInitOffset;
-    
+    public bool isGrounded;
     // Start is called before the first frame update
     private void Awake() {
         rb = GetComponent<Rigidbody2D>();
@@ -26,7 +26,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         float horizontal = Input.GetAxisRaw("Horizontal");
-        float VerticalInput = Input.GetAxis("Jump");
+        //float VerticalInput = Input.GetAxis("Jump");
         MoveCharacter(horizontal);
         animator.SetFloat("Speed",Mathf.Abs(horizontal));
 
@@ -37,8 +37,11 @@ public class PlayerController : MonoBehaviour
             GetComponent<SpriteRenderer>().flipX = false;
         }
 
-        PlayJumpAnimation( VerticalInput );
-        //Crouch handling
+        if (Input.GetButtonDown("Jump") && isGrounded)
+        {
+            PlayJumpAnimation();
+        }
+        
         if(Input.GetKeyDown(KeyCode.LeftControl)){
             crouch(true);
         }
@@ -55,12 +58,26 @@ public class PlayerController : MonoBehaviour
         transform.position = position;
 
     }
-    public void PlayJumpAnimation( float vertical )
+    public void PlayJumpAnimation()
     {
-        if ( vertical > 0 )
+        isGrounded = false;
+        animator.SetTrigger( "Jump" );
+        rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+        
+    }
+    private void OnCollisionEnter2D(Collision2D collision){
+
+        if(collision.gameObject.CompareTag("Ground")){
+            Debug.Log("grounded");
+            isGrounded = true;
+            
+        }
+    }
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
         {
-            animator.SetTrigger( "Jump" );
-            rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Force);
+            isGrounded = false;
         }
     }
     void crouch(bool isCrouching)
