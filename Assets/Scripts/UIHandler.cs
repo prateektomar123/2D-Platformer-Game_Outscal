@@ -15,4 +15,8 @@ public class UIHandler : MonoBehaviour
         Time.timeScale = 1f;
         SceneManager.LoadScene(buildIndex);
     }
+    public void loadScene(string sceneName){
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(sceneName);
+    }
 }
