@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
 
     public ScoreController scoreController;
     public bool isGrounded;
+    public GameObject heartParent;
     // Start is called before the first frame update
     private void Awake() {
         rb = GetComponent<Rigidbody2D>();
@@ -78,12 +79,17 @@ public class PlayerController : MonoBehaviour
                 SceneManager.LoadScene(0);
             }
         }
-        else if (collision.gameObject.CompareTag("key"))
+        else if (collision.gameObject.CompareTag("Enemy"))
         {
-            scoreController.incScore();
-            collision.gameObject.GetComponent<Animator>().SetBool("destroyed",true);
-            Destroy(collision.gameObject,2.5f);
+            
+            Destroy(heartParent.transform.GetChild(0).gameObject);
+
+            if(heartParent.transform.childCount == 1){
+                Debug.Log("Player Died");
+                SceneManager.LoadScene(0);
+            }
         }
+        
     }
     private void OnCollisionExit2D(Collision2D collision)
     {
@@ -91,6 +97,13 @@ public class PlayerController : MonoBehaviour
         {
             isGrounded = false;
             
+        }
+    }
+    private void OnTriggerEnter2D(Collider2D other) {
+        if(other.CompareTag("key")){
+            scoreController.incScore();
+            other.GetComponent<Animator>().SetBool("destroyed",true);
+            Destroy(other,2.5f);
         }
     }
     void crouch(bool isCrouching)
