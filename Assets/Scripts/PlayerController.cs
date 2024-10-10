@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
 
     public ScoreController scoreController;
     public bool isGrounded;
+    public GameObject heartParent;
     // Start is called before the first frame update
     private void Awake() {
         rb = GetComponent<Rigidbody2D>();
@@ -80,7 +81,13 @@ public class PlayerController : MonoBehaviour
         }
         else if (collision.gameObject.CompareTag("Enemy"))
         {
-            Debug.Log("Player Died");
+            
+            Destroy(heartParent.transform.GetChild(0).gameObject);
+
+            if(heartParent.transform.childCount == 1){
+                Debug.Log("Player Died");
+                SceneManager.LoadScene(0);
+            }
         }
         
     }
