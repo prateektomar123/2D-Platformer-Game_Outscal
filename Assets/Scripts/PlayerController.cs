@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour
     public float jumpForce;
     private Vector2 boxColInitSize;
     private Vector2 boxColInitOffset;
-
+    public UIHandler uIHandler;
     public ScoreController scoreController;
     public bool isGrounded;
     public GameObject heartParent;
@@ -76,7 +76,8 @@ public class PlayerController : MonoBehaviour
             isGrounded = true;
             if(transform.position.y < 0){
                 Debug.Log("GameOver!!");
-                SceneManager.LoadScene(0);
+                uIHandler.gameOver();
+                //SceneManager.LoadScene(0);
             }
         }
         else if (collision.gameObject.CompareTag("Enemy"))
@@ -86,7 +87,7 @@ public class PlayerController : MonoBehaviour
 
             if(heartParent.transform.childCount == 1){
                 Debug.Log("Player Died");
-                SceneManager.LoadScene(0);
+                uIHandler.gameOver();
             }
         }
         
