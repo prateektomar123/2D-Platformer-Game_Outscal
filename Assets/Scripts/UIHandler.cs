@@ -9,6 +9,7 @@ public class UIHandler : MonoBehaviour
     public GameObject gameOverMenu;
     public UnityEvent onLastLevel;
     public bool lastLevel;
+    public AudioSource buttonSound;
 
     private void Start() {
         if(lastLevel){

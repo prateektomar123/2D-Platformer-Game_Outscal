@@ -33,7 +33,13 @@ public class PlayerController : MonoBehaviour
         //float VerticalInput = Input.GetAxis("Jump");
         MoveCharacter(horizontal);
         animator.SetFloat("Speed",Mathf.Abs(horizontal));
-
+        if (horizontal == 0)
+        {
+            SoundManager.Instance.playerMovement.Pause();
+        }
+        else{
+            SoundManager.Instance.playerMovement.Play();
+        }
         if(horizontal < 0){
             GetComponent<SpriteRenderer>().flipX = true;
         }
